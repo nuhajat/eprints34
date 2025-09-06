@@ -1,0 +1,43 @@
+version: "3.9"
+
+services:
+  eprints-app:
+    build: .
+    container_name: eprints-app
+    restart: always
+    ports:
+      - "1988:80"
+    volumes:
+      - ./eprints_data:/opt/eprints3/archives
+    environment:
+      - APACHE_RUN_USER=eprints
+      - APACHE_RUN_GROUP=eprints
+    depends_on:
+      - eprints-db
+
+  eprints-db:
+    image: mariadb:10.6
+    container_name: eprints-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+    command: --default-authentication-plugin=mysql_native_password
+    volumes:
+      - ./db_data:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: eprints-phpmyadmin
+    restart: always
+    ports:
+      - "1989:80"
+    environment:
+      PMA_HOST: eprints-db
+      PMA_USER: root
+      PMA_PASSWORD: rootpass
+    depends_on:
+      - eprints-db
+
+volumes:
+  db_data:
+  eprints_data:
