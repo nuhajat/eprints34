@@ -9,8 +9,8 @@
 
 ### 1. Clone Repo & Build Image
 ```bash
-git clone <repo-url>
-cd <repo-folder>
+git clone https://github.com/nuhajat/eprints34.git
+cd eprints34
 docker-compose build
 ```
 
